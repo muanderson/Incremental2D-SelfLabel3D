@@ -8,6 +8,30 @@ This repository provides a self-labelling framework designed for 3D medical imag
 
 ---
 
+## ⚙️ Setup and Installation
+
+To set up the environment for this project:
+
+1. Create the Conda environment with the required dependencies:
+
+    ```bash
+    conda env create -f environment.yml
+    ```
+
+2. Activate the environment (replace `your-environment-name` with the actual name):
+
+    ```bash
+    conda activate your-environment-name
+    ```
+
+3. Install additional pip dependencies if needed:
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+---
+
 ## 📂 File Structure
 
 All Python source code is located in the `scripts/` directory. Your data should be organised as shown below and is assumed to be .nii.gz format:
@@ -33,31 +57,7 @@ All Python source code is located in the `scripts/` directory. Your data should 
     │
     └── README.md
 
----
-
-## ⚙️ Setup and Installation
-
-To set up the environment for this project:
-
-1. Create the Conda environment with the required dependencies:
-
-    ```bash
-    conda env create -f environment.yml
-    ```
-
-2. Activate the environment (replace `your-environment-name` with the actual name):
-
-    ```bash
-    conda activate your-environment-name
-    ```
-
-3. Install additional pip dependencies if needed:
-
-    ```bash
-    pip install -r requirements.txt
-    ```
-
----
+--- 
 
 ## 🚀 Usage
 
