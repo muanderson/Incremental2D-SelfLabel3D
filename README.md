@@ -58,12 +58,12 @@ The entire workflow is managed through command-line scripts.
 
 The self-training process is initiated using `train.py`. This script will start by training on the central slice of your original data, then iteratively predict on neighbouring slices, add confident predictions to the training set, and retrain the model.
 
-    python scripts/train.py \
-        --original_data_dir /path/to/your/data/original_dataset \
-        --output_dir /path/to/your/training_output \
-        --epochs_per_iteration 20 \
-        --batch_size 16 \
-        --lr 0.0001 \
+    python scripts/train.py /
+        --original_data_dir /path/to/your/data/original_dataset /
+        --output_dir /path/to/your/training_output /
+        --epochs_per_iteration 20 /
+        --batch_size 16 /
+        --lr 0.0001 /
         --confidence_threshold 0.8
 
 **Key Arguments:**
@@ -80,9 +80,9 @@ The self-training process is initiated using `train.py`. This script will start 
 
 Once the training process is complete, a final model checkpoint (`best_model.h5`) will be available in your output directory. You can evaluate its performance on a separate, unseen test set using `evaluate.py`.
 
-    python scripts/evaluate.py \
-        --model_weights /path/to/your/training_output/checkpoints/best_model.h5 \
-        --test_data_dir /path/to/your/data/test_dataset \
+    python scripts/evaluate.py /
+        --model_weights /path/to/your/training_output/checkpoints/best_model.h5 /
+        --test_data_dir /path/to/your/data/test_dataset /
         --batch_size 32
 
 **Key Arguments:**
