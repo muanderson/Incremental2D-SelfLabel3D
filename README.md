@@ -65,19 +65,19 @@ The script starts by training on the central slice of your original data, then i
 
 Example Command (Standard Case: Full 3D Labels):
 
-    python scripts/train.py \
-        --original_data_dir /path/to/your/data/original_dataset \
-        --output_dir /path/to/your/training_output \
-        --epochs_per_iteration 20 \
-        --batch_size 16 \
-        --lr 0.0001 \
+    python scripts/train.py /
+        --original_data_dir /path/to/your/data/original_dataset /
+        --output_dir /path/to/your/training_output /
+        --epochs_per_iteration 20 /
+        --batch_size 16 /
+        --lr 0.0001 /
         --confidence_threshold 0.8
 
 Example Command (Real-World Case: Pre-extracted 2D Labels):
 
-    python scripts/train.py \
-        --original_data_dir /path/to/your/data/original_dataset \
-        --output_dir /path/to/your/training_output \
+    python scripts/train.py /
+        --original_data_dir /path/to/your/data/original_dataset /
+        --output_dir /path/to/your/training_output /
         --labels_are_2d_slices
 
 Key Arguments:
@@ -95,9 +95,9 @@ Key Arguments:
 
 Once the training process is complete, a final model checkpoint (`best_model.h5`) will be available in your output directory. You can evaluate its performance on a separate, unseen test set using `evaluate.py`.
 
-    python scripts/evaluate.py \
-        --model_weights /path/to/your/training_output/checkpoints/best_model.h5 \
-        --test_data_dir /path/to/your/data/test_dataset \
+    python scripts/evaluate.py /
+        --model_weights /path/to/your/training_output/checkpoints/best_model.h5 /
+        --test_data_dir /path/to/your/data/test_dataset /
         --batch_size 32
 
 Key Arguments:
