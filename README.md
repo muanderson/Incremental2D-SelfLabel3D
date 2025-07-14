@@ -56,23 +56,38 @@ The entire workflow is managed through command-line scripts.
 
 ### 1. Training the Model
 
-The self-training process is initiated using `train.py`. This script will start by training on the central slice of your original data, then iteratively predict on neighbouring slices, add confident predictions to the training set, and retrain the model.
+The self-training process is initiated using `train.py`. This script supports two ground-truth scenarios:
 
-    python scripts/train.py /
-        --original_data_dir /path/to/your/data/original_dataset /
-        --output_dir /path/to/your/training_output /
-        --epochs_per_iteration 20 /
-        --batch_size 16 /
-        --lr 0.0001 /
+- Your labels are full 3D volumes.
+- Your labels are pre-extracted 2D central slices (real-world scenario).
+
+The script starts by training on the central slice of your original data, then iteratively predicts on neighbouring slices, adds confident predictions to the training set, and retrains the model.
+
+Example Command (Standard Case: Full 3D Labels):
+
+    python scripts/train.py \
+        --original_data_dir /path/to/your/data/original_dataset \
+        --output_dir /path/to/your/training_output \
+        --epochs_per_iteration 20 \
+        --batch_size 16 \
+        --lr 0.0001 \
         --confidence_threshold 0.8
 
-**Key Arguments:**
+Example Command (Real-World Case: Pre-extracted 2D Labels):
 
-- `--original_data_dir`: (Required) Path to the dataset containing the initial annotated volumes  
-- `--output_dir`: (Required) Path to a directory where generated pseudo-labels, model checkpoints, and logs will be saved  
-- `--epochs_per_iteration`: Number of epochs to train during each expansion loop  
-- `--batch_size`: Batch size per GPU  
-- `--confidence_threshold`: The probability threshold (0.0 to 1.0) required to accept a model's prediction as a new pseudo-label  
+    python scripts/train.py \
+        --original_data_dir /path/to/your/data/original_dataset \
+        --output_dir /path/to/your/training_output \
+        --labels_are_2d_slices
+
+Key Arguments:
+
+- `--original_data_dir`: (Required) Path to the dataset containing the initial annotated volumes.
+- `--output_dir`: (Required) Path to a directory where generated pseudo-labels, model checkpoints, and logs will be saved.
+- `--labels_are_2d_slices`: (Optional) Add this flag if your ground-truth labels are 2D files, each corresponding to the central slice of a 3D image volume.
+- `--epochs_per_iteration`: Number of epochs to train during each expansion loop.
+- `--batch_size`: Batch size per GPU.
+- `--confidence_threshold`: The probability threshold (0.0 to 1.0) required to accept a model's prediction as a new pseudo-label.
 
 ---
 
@@ -80,15 +95,15 @@ The self-training process is initiated using `train.py`. This script will start 
 
 Once the training process is complete, a final model checkpoint (`best_model.h5`) will be available in your output directory. You can evaluate its performance on a separate, unseen test set using `evaluate.py`.
 
-    python scripts/evaluate.py /
-        --model_weights /path/to/your/training_output/checkpoints/best_model.h5 /
-        --test_data_dir /path/to/your/data/test_dataset /
+    python scripts/evaluate.py \
+        --model_weights /path/to/your/training_output/checkpoints/best_model.h5 \
+        --test_data_dir /path/to/your/data/test_dataset \
         --batch_size 32
 
-**Key Arguments:**
+Key Arguments:
 
-- `--model_weights`: (Required) Path to the final `.h5` model checkpoint file  
-- `--test_data_dir`: (Required) Path to the hold-out test set, which must contain `imagesTs` and `labelsTs` subdirectories  
+- `--model_weights`: (Required) Path to the final `.h5` model checkpoint file.
+- `--test_data_dir`: (Required) Path to the hold-out test set, which must contain `imagesTs` and `labelsTs` subdirectories.
 
 ---
 
