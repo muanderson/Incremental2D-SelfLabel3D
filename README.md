@@ -2,7 +2,7 @@
 
 Repo for code relating to the paper entitled *"Incremental 2D Self-Labelling for Effective 3D Medical Volume Segmentation with Minimal Annotations"*.
 
-This repository provides a self-labelling framework designed for 3D medical image segmentation. The process begins with just a single annotated 2D slice from a 3D volume and iteratively trains a U-Net model to pseudo-label adjacent slices, progressively segmenting the entire volume. This approach significantly reduces the initial annotation burden.
+This repository provides a self-labelling framework designed for 3D medical image segmentation using TensorFlow. The process begins with just a single annotated 2D slice from a 3D volume and iteratively trains a U-Net model to pseudo-label adjacent slices, progressively segmenting the entire volume. This approach significantly reduces the initial annotation burden.
 
 ![Architecture Draft](method_flowchart.png)
 
