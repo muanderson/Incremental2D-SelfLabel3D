@@ -114,9 +114,11 @@ class SelfTrainingEngine:
 
     def _prepare_initial_dataset(self):
         """
+        Creates the initial dataset in the output directory.
 
-        Copies the initial central slice from the original dataset to the
-        training directory to kickstart the process.
+        If args.labels_are_2d_slices is True, it pairs the central image slice
+        with the provided 2D label. Otherwise, it extracts the central slice
+        from both the 3D image and 3D label volumes.
         """
         logging.info("Preparing initial dataset with central slices...")
         
@@ -128,22 +130,46 @@ class SelfTrainingEngine:
         original_label_dir = os.path.join(self.args.original_data_dir, 'labelsTr')
 
         for filename, data in self.state.items():
-            # Load original image and label
-            img_vol = nib.load(data['path']).get_fdata()
-            label_path = os.path.join(original_label_dir, filename)
-            label_vol = nib.load(label_path).get_fdata()
-
-            # Extract central slice
-            start, end = data['labeled_from'], data['labeled_to']
-            img_slice = img_vol[:, :, start:end]
-            label_slice = label_vol[:, :, start:end]
+            # --- Image Handling (always the same) ---
+            img_vol_3d = nib.load(data['path'])
+            img_data_3d = img_vol_3d.get_fdata()
             
-            # Save as new NIfTI files
-            new_img = nib.Nifti1Image(img_slice, data['affine'], data['header'])
-            new_label = nib.Nifti1Image(label_slice, data['affine'], data['header'])
+            # Extract the single central image slice
+            start, end = data['labeled_from'], data['labeled_to']
+            img_slice_data = img_data_3d[:, :, start:end]
+            
+            # Create a new NIfTI object for the single image slice
+            # We need to update the affine to reflect the new 1-slice depth
+            new_affine = img_vol_3d.affine.copy()
+            img_slice_nifti = nib.Nifti1Image(img_slice_data, new_affine, data['header'])
+            nib.save(img_slice_nifti, os.path.join(output_img_dir, filename))
 
-            nib.save(new_img, os.path.join(output_img_dir, filename))
-            nib.save(new_label, os.path.join(output_label_dir, filename))
+            # --- Label Handling (conditional) ---
+            label_path = os.path.join(original_label_dir, filename)
+            
+            if self.args.labels_are_2d_slices:
+                # SCENARIO 1: Load the provided 2D label directly
+                logging.info(f"Loading pre-extracted 2D label for {filename}")
+                label_slice_nifti = nib.load(label_path)
+                # Ensure the data is shaped correctly as a 1-slice 3D volume
+                label_data_2d = label_slice_nifti.get_fdata()
+                if label_data_2d.ndim == 2:
+                    label_data_3d = np.expand_dims(label_data_2d, axis=2)
+                else:
+                    label_data_3d = label_data_2d
+                
+                # Create new NIfTI object with compatible header info
+                label_nifti_to_save = nib.Nifti1Image(label_data_3d, new_affine, data['header'])
+                
+            else:
+                # SCENARIO 2: Extract central slice from full 3D label volume
+                logging.info(f"Extracting central slice from 3D label for {filename}")
+                label_vol_3d = nib.load(label_path)
+                label_data_3d = label_vol_3d.get_fdata()
+                label_slice_data = label_data_3d[:, :, start:end]
+                label_nifti_to_save = nib.Nifti1Image(label_slice_data, new_affine, data['header'])
+
+            nib.save(label_nifti_to_save, os.path.join(output_label_dir, filename))
 
     def _run_prediction_step(self, model):
         """
