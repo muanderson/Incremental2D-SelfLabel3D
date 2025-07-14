@@ -56,6 +56,8 @@ if __name__ == '__main__':
                         help="Path to the original dataset with 'imagesTr' and 'labelsTr'.")
     parser.add_argument('--output_dir', type=str, required=True,
                         help="Directory to save generated pseudo-labels, checkpoints, and logs.")
+    parser.add_argument('--labels_are_2d_slices', action='store_true',
+                        help="Set this flag if the ground-truth labels are pre-extracted 2D central slices, not full 3D volumes.")
 
     # --- Model Hyperparameters ---
     parser.add_argument('--img_width', type=int, default=176, help="Image width.")
