@@ -37,16 +37,25 @@ All Python source code is located in the `scripts/` directory. Your data should 
 
 ## ⚙️ Setup and Installation
 
-This project is built with TensorFlow. Ensure you have the necessary environment and packages installed.
+To set up the environment for this project:
 
-### 1. Clone the repository
+1. Create the Conda environment with the required dependencies:
 
-    git clone https://github.com/your-username/your-repository-name.git
-    cd your-repository-name
+    ```bash
+    conda env create -f environment.yml
+    ```
 
-### 2. Install required packages
+2. Activate the environment (replace `your-environment-name` with the actual name):
 
-    pip install tensorflow==2.10.1 numpy nibabel albumentations
+    ```bash
+    conda activate your-environment-name
+    ```
+
+3. Install additional pip dependencies if needed:
+
+    ```bash
+    pip install -r requirements.txt
+    ```
 
 ---
 
