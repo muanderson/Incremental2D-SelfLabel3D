@@ -8,7 +8,7 @@ This repository provides a self-labelling framework designed for 3D medical imag
 
 ---
 
-## ⚙️ Setup and Installation
+## Setup and Installation
 
 To set up the environment for this project:
 
@@ -32,7 +32,7 @@ To set up the environment for this project:
 
 ---
 
-## 📂 File Structure
+## File Structure
 
 All Python source code is located in the `scripts/` directory. Your data should be organised as shown below and is assumed to be .nii.gz format:
 
@@ -59,7 +59,7 @@ All Python source code is located in the `scripts/` directory. Your data should 
 
 --- 
 
-## 🚀 Usage
+## Usage
 
 The entire workflow is managed through command-line scripts.
 
@@ -116,7 +116,7 @@ Key Arguments:
 
 ---
 
-## 📜 License
+## License
 
 This repository is licensed under the MIT License. See the `LICENSE` file for details.
 
@@ -128,4 +128,4 @@ If you intend to use this repository for commercial purposes, please verify the 
 
 If you use this code, please cite:
 
-    TBD
+    M. Anderson, M. Habib, D. H. Steel, and B. Obara, “Incremental 2D self-labelling for effective 3D medical volume segmentation with minimal annotations,” BMC Medical Imaging, vol. 25, p. 450, 2025.
